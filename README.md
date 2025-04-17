@@ -25,7 +25,7 @@ plot_comparisons.py: Generates a 2×2 figure for throughput, loss, RTT stats, an
 
 ### Run Experiment
    mm-link tests/50mbps_data.trace tests/50mbps_ack.trace   --uplink-log=experiment_logs/50mbps_datalink.log   --downlink-log=experiment_logs/50 mbps_acklink.log -- 
-     python2 src/experiments/tunnel_manager_updated.py --auto-test --scheme cubic --data-dir experiment_logs/50mbps_cubic
+     python2 src/experiments/tunnel_manager_updated.py --auto-test --scheme SCReAM --data-dir experiment_logs/50mbps_SCReAM
 
 ### Analyze Results
 python2 tests/analyze_metrics.py experiment_logs/50mbps_datalink.log experiment_logs/rttevents.log experiment_logs/sent.log experiment_logs/recv.log
