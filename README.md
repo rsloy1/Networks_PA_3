@@ -1,4 +1,40 @@
-# Pantheon of Congestion Control
+# Pantheon Network Experiments
+
+A simple setup to compare TCP congestion control schemes (e.g., Cubic, BBR, SCReAM, LEDBAT, Tao) under controlled network conditions using Pantheon and Mahimahi.
+
+## Structure
+
+src/: Pantheon code and CC wrappers.
+
+tests/: Trace generator and analysis scripts.
+
+experiment_logs/: One folder per scheme with raw logs:
+
+50mbps_datalink.log, 50mbps_acklink.log (throughput)
+
+sent.log, recv.log, rttevents.log (packet events)
+
+plot_comparisons.py: Generates a 2×2 figure for throughput, loss, RTT stats, and RTT vs. throughput.
+
+## Usage
+### Update dummy_tunnel_client.py to add delay for desired RTT
+
+### Generate Traces (example 50Mbps, 60s)
+   python2 tests/generate_trace.py 50 60 tests/50mbps_data.trace
+   cp tests/50mbps_data.trace tests/50mbps_ack.trace
+
+### Run Experiment
+   mm-link tests/50mbps_data.trace tests/50mbps_ack.trace   --uplink-log=experiment_logs/50mbps_datalink.log   --downlink-log=experiment_logs/50 mbps_acklink.log -- 
+     python2 src/experiments/tunnel_manager_updated.py --auto-test --scheme cubic --data-dir experiment_logs/50mbps_cubic
+
+### Analyze Results
+python2 tests/analyze_metrics.py experiment_logs/50mbps_datalink.log experiment_logs/rttevents.log experiment_logs/sent.log experiment_logs/recv.log
+
+### Plot Data
+python2 experiment_logs/plot_comparisons.py
+
+
+# Pantheon of Congestion Control (Original Pantheon README)
 The Pantheon contains wrappers for many popular practical and research
 congestion control schemes. The Pantheon enables them to run on a common
 interface, and has tools to benchmark and compare their performances.
